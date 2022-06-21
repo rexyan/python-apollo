@@ -40,7 +40,7 @@ class ApolloClient(object):
         self._cycle_time = cycle_time
         self._hash = {}
         if cache_file_path is None:
-            self._cache_file_path = os.path.join(tempfile.gettempdir(), "apollo", "config",
+            self._cache_file_path = os.path.join(tempfile.gettempdir(), "", "config",
                                                  f"{datetime.datetime.now().strftime('%Y-%m-%d')}")
         else:
             self._cache_file_path = cache_file_path

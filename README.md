@@ -2,7 +2,6 @@
 基于[apollo-client](https://github.com/BruceWW/pyapollo)，修改的 Apollo 客户端。
 
 
-
 ### 使用示例
 **安装**
 
@@ -10,9 +9,13 @@
 pip install -U python-apollo
 ```
 
-**发送文本**
+**使用示例**
 ```python
+from apollo.client import ApolloClient
+
+# 获取 ApolloClient 实例
 apollo = ApolloClient(app_id='xxx', config_server_url='http://127.0.0.1:8090', cycle_time=30)
+
 # 从指定的 namespace 中获取 host 的值。
 apollo.get_value("host", namespace='application')
 
