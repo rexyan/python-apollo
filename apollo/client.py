@@ -19,7 +19,7 @@ class ApolloClient(object):
             cluster: str = "default",
             config_server_url: str = "http://localhost:8090",
             timeout: int = 60,
-            cycle_time: int = 300,
+            cycle_time: int = 180,
             cache_file_path: str = None,
     ):
         """
@@ -40,11 +40,12 @@ class ApolloClient(object):
         self._cycle_time = cycle_time
         self._hash = {}
         if cache_file_path is None:
-            self._cache_file_path = os.path.join(tempfile.gettempdir(), "", "config",
+            self._cache_file_path = os.path.join(tempfile.gettempdir(), "config", self.app_id,
                                                  f"{datetime.datetime.now().strftime('%Y-%m-%d')}")
         else:
             self._cache_file_path = cache_file_path
 
+        self.display_start_message = False
         self._path_checker()
         self.start()
 
@@ -201,9 +202,6 @@ class ApolloClient(object):
             log.warning(str(e))
             self._load_local_cache_file()
 
-        log.info(f" ======================== Config Client ========================")
-        log.info(self._cache)
-
     def _load_local_cache_file(self):
         """
         :return:
@@ -223,6 +221,10 @@ class ApolloClient(object):
         :return:
         """
         while True:
-            log.info("Config Client Entering listener loop...")
             self._long_poll()
             time.sleep(self._cycle_time)
+
+            if not self.display_start_message:
+                log.info(f" ======================== Config Client Start Running ========================")
+                log.info(self._cache)
+                self.display_start_message = True
