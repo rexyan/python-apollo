@@ -134,7 +134,7 @@ class ApolloClient(object):
         检查缓存目录是否存在
         :return:
         """
-        if not os.path.isdir(self._cache_file_path):
+        if not os.path.exists(self._cache_file_path):
             os.makedirs(self._cache_file_path)
 
     def _update_local_cache(self, release_key: str, data: str, namespace: str = "application") -> None:
