@@ -7,8 +7,8 @@ with io.open('README.md', 'rt', encoding='utf8') as f:
 
 setup(
     name='python-apollo',
-    version="0.0.2",
-    install_requires=['requests>=2.23.0'],
+    version="0.0.3",
+    install_requires=['requests>=2.23.0', "PyYAML>=5.3.1"],
     url='https://github.com/rexyan/python-apollo',
     license='MIT',
     author='RexYan',

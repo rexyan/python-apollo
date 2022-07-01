@@ -6,6 +6,7 @@ import datetime
 import tempfile
 import requests
 import threading
+import yaml
 
 from typing import Any, Dict
 
@@ -60,6 +61,25 @@ class ApolloClient(object):
         if r.status_code == 200:
             namespaces = {_.get("namespaceName"): _.get("id") for _ in r.json()}
         return namespaces
+
+    @staticmethod
+    def parse(namespace, value):
+        """
+        解析不同类型的配置文件
+        :param namespace:
+        :param value:
+        :return:
+        """
+        value = json.loads(value)
+        config_type = namespace.split(".")[-1] or ""
+        if config_type.upper() in ["JSON", "YAML", "YML", "XML", "TXT"]:
+            if config_type.upper() == "JSON":
+                return json.loads(value.get("content"))
+            elif config_type.upper() in ["YAML", "YML"]:
+                return yaml.load(value.get("content"), Loader=yaml.Loader)
+            else:
+                return value.get("content")
+        return value
 
     def get_values(self, namespace: str = "application", public_namespace: [str] = None):
         """
@@ -177,7 +197,7 @@ class ApolloClient(object):
             r = self._request_get(url)
             if r.status_code == 200 and r.text != "":
                 response_data = r.json()
-                config = json.loads(response_data.get("configurations", {}))
+                config = self.parse(namespace, response_data.get("configurations", {}))
                 release_key = response_data.get("releaseKey", str(time.time()))
 
                 self._cache[namespace] = config
