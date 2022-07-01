@@ -20,11 +20,26 @@ apollo = ApolloClient(app_id='xxx', config_server_url='http://127.0.0.1:8090', c
 apollo.get_value("host", namespace='application')
 
 # 从指定的 namespace 中获取 host 的值, 如果没有则去公共 namespace 中获取。如果都存在则私有的优先级高于公共的。
-apollo.get_value("host", namespace='application', public_namespace=["common.smtp"])
+apollo.get_value("host", namespace='application', public_namespace=["public.smtp"])
 
 # 获取指定 namespace 下的所有配置值
 apollo.get_values(namespace='application')
 
 # 获取指定 namespace 和 public_namespace 下的所有配置值。如果都存在则私有的优先级高于公共的。
-apollo.get_values(namespace='application', public_namespace=["common.smtp"])
+apollo.get_values(namespace='application', public_namespace=["public.smtp"])
+```
+
+其他类型的 namespace
+```python
+# 从指定的 namespace 中获取 host 的值。
+apollo.get_value("host", namespace='config.json')
+
+# 从指定的 namespace 中获取 host 的值, 如果没有则去公共 namespace 中获取。如果都存在则私有的优先级高于公共的。
+apollo.get_value("host", namespace='config.yaml', public_namespace=["public.sso.json"])
+
+# 获取指定 namespace 下的所有配置值
+apollo.get_values(namespace='config.json')
+
+# 获取指定 namespace 和 public_namespace 下的所有配置值。如果都存在则私有的优先级高于公共的。
+apollo.get_values(namespace='config.yaml', public_namespace=["public.sso.json"])
 ```
